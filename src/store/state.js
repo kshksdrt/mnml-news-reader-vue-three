@@ -1,10 +1,12 @@
 import { reactive, computed } from 'vue';
+import { lsSet } from '../scripts/localStorage'
 
 // Constants
-// const LS_KEYS = {
-//   subreddits: 'mnml-news-reader-vue.subreddits',
-//   theme: 'mnml-news-reader-vue.theme'
-// }
+const LS_KEYS = {
+  subreddits: 'mnml-news-reader-vue.subreddits',
+  theme: 'mnml-news-reader-vue.theme'
+}
+
 const themes = ['light', 'dark']
 const views = ['home', 'sources', 'about']
 
@@ -29,6 +31,7 @@ function toggleTheme () {
 function setTheme (payload) {
   if (!themes.includes(payload)) return
   state.theme = payload
+  lsSet(LS_KEYS.theme, payload)
   console.log('MUTATION', 'setTheme')
 }
 
@@ -40,10 +43,21 @@ function changeView (payload) {
 
 function addSubreddit (payload) {
   state.subreddits.push(payload)
+  lsSet(LS_KEYS.subreddits, state.subreddits)
+  console.log('MUTATION', 'addSubreddit')
 }
 
 function removeSubreddit (payload) {
   state.subreddits = state.subreddits.filter(x => x !== payload)
+  lsSet(LS_KEYS.subreddits, state.subreddits)
+  console.log('MUTATION', 'removeSubreddit')
+}
+
+function importSubreddits (payload) {
+  if (!Array.isArray(payload)) return
+  if (payload.filter(x => typeof x !== 'string').length > 0) return
+  state.subreddits = payload
+  console.log('MUTATION', 'importSubreddits')
 }
 
 export default {
@@ -52,6 +66,7 @@ export default {
   subreddits,
   addSubreddit,
   removeSubreddit,
+  importSubreddits,
   toggleTheme,
   setTheme,
   changeView,
