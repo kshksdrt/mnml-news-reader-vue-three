@@ -13,24 +13,24 @@
 </template>
 
 <script>
-import { onMounted, ref } from 'vue'
-import Content from './Home/Content'
-import state from "../../store/state"
+import { onMounted, ref } from "vue";
+import Content from "./Home/Content";
+import state from "../../store/state";
 
-const currentTab = ref('')
-const setCurrentTab = (subreddit) => currentTab.value = subreddit
-const selectDefault = () => currentTab.value = state.subreddits.value[0]
+const currentTab = ref("");
+const setCurrentTab = (subreddit) => (currentTab.value = subreddit);
+const selectDefault = () => (currentTab.value = state.subreddits.value[0]);
 
 export default {
   name: "Home",
   components: { Content },
-  setup () {
-    onMounted(selectDefault)
+  setup() {
+    onMounted(selectDefault);
     return {
       subreddits: state.subreddits,
       currentTab,
       setCurrentTab,
-    }
-  }
-}
+    };
+  },
+};
 </script>

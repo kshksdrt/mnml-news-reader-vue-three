@@ -1,6 +1,10 @@
 <template>
   <div class="header">
-    <div class="overlay-invisible" v-if="themeDropdown" @click="toggleThemeDropdown()"></div>
+    <div
+      class="overlay-invisible"
+      v-if="themeDropdown"
+      @click="toggleThemeDropdown()"
+    ></div>
     <div class="navbar">
       <div to="/" class="navbar-logo-container">
         <SvgIcon class="nav-logo" icon="logo" />
@@ -19,7 +23,7 @@
               <SvgIcon icon="sun" />
               <p>Light</p>
             </div>
-            <hr/>
+            <hr />
             <div @click="onThemeSelected('dark')">
               <SvgIcon icon="moon" />
               <p>Dark</p>
@@ -39,33 +43,33 @@
 </template>
 
 <script>
-import { ref } from "vue"
-import useBreakpoints from "../compositionFunctions/useBreakpoints"
-import state from "../store/state"
-import SvgIcon from "../lib/SvgIcon"
+import { ref } from "vue";
+import useBreakpoints from "../compositionFunctions/useBreakpoints";
+import state from "../store/state";
+import SvgIcon from "../lib/SvgIcon";
 
-const themeDropdown = ref(false)
-function toggleThemeDropdown () {
-  themeDropdown.value = !themeDropdown.value
+const themeDropdown = ref(false);
+function toggleThemeDropdown() {
+  themeDropdown.value = !themeDropdown.value;
 }
-function onThemeSelected (theme) {
-  state.setTheme(theme)
+function onThemeSelected(theme) {
+  state.setTheme(theme);
 }
 
 export default {
   name: "Header",
   components: { SvgIcon },
-  setup () {
-    const { type: deviceType } = useBreakpoints()
+  setup() {
+    const { type: deviceType } = useBreakpoints();
     return {
       deviceType,
       theme: state.theme,
       themeDropdown,
       toggleThemeDropdown,
       toggleTheme: () => state.toggleTheme(),
-      navigate: payload => state.changeView(payload),
+      navigate: (payload) => state.changeView(payload),
       onThemeSelected,
-    }
-  }
-}
+    };
+  },
+};
 </script>

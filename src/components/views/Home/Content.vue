@@ -13,30 +13,30 @@
 </template>
 
 <script>
-import axios from 'axios'
-import StoryCard from './StoryCard'
-import SvgIcon from "../../../lib/SvgIcon"
+import axios from "axios";
+import StoryCard from "./StoryCard";
+import SvgIcon from "../../../lib/SvgIcon";
 
-const BASE_URL = 'https://www.reddit.com/r'
+const BASE_URL = "https://www.reddit.com/r";
 
-function storiesCompressor (stories) {
-  return stories.map(each => {
-    const { title, score, domain, url, permalink, created, name } = each.data
-    const time = getReadableTime(Date.now() - (created * 1000))
-    return { title, score, domain, url, permalink, time, name }
-  })
+function storiesCompressor(stories) {
+  return stories.map((each) => {
+    const { title, score, domain, url, permalink, created, name } = each.data;
+    const time = getReadableTime(Date.now() - created * 1000);
+    return { title, score, domain, url, permalink, time, name };
+  });
 }
 
-function getReadableTime (ms) {
-  const seconds = ( ms / 1000 ).toFixed(1)
-  const minutes = ( ms / ( 1000 * 60 ) ).toFixed(1)
-  const hours = ( ms / ( 1000 * 60 * 60 ) ).toFixed(1)
-  const days = ( ms / ( 1000 * 60 * 60 * 24 ) ).toFixed(1)
-  
-  if (seconds < 60) return `${Math.floor(seconds)} seconds ago`
-  if (minutes < 60) return `${Math.floor(minutes)} minutes ago`
-  if (hours < 60) return `${Math.floor(hours)} hours ago`
-  if (days < 60) return `${Math.floor(days)} days ago`
+function getReadableTime(ms) {
+  const seconds = (ms / 1000).toFixed(1);
+  const minutes = (ms / (1000 * 60)).toFixed(1);
+  const hours = (ms / (1000 * 60 * 60)).toFixed(1);
+  const days = (ms / (1000 * 60 * 60 * 24)).toFixed(1);
+
+  if (seconds < 60) return `${Math.floor(seconds)} seconds ago`;
+  if (minutes < 60) return `${Math.floor(minutes)} minutes ago`;
+  if (hours < 60) return `${Math.floor(hours)} hours ago`;
+  if (days < 60) return `${Math.floor(days)} days ago`;
 }
 
 export default {
@@ -45,99 +45,98 @@ export default {
   props: {
     subredditName: String,
   },
-  data () {
+  data() {
     return {
       stories: [],
       loading: true,
       error: false,
-      errorMessage: '',
-    }
+      errorMessage: "",
+    };
   },
-  mounted () {
-    if (this.subredditName && this.subredditName.length > 0) this.initialLoad()
+  mounted() {
+    if (this.subredditName && this.subredditName.length > 0) this.initialLoad();
   },
   watch: {
-    subredditName (val) {
-      if (val && val.length > 0) this.initialLoad()
+    subredditName(val) {
+      if (val && val.length > 0) this.initialLoad();
     },
   },
   methods: {
     makeRequest() {
-      this.stories = []
-      this.loading = true
-      this.error = false
-      this.errorMessage = ''
+      this.stories = [];
+      this.loading = true;
+      this.error = false;
+      this.errorMessage = "";
     },
     onStoriesReceived(stories) {
-      this.stories = stories
-      this.loading = false
-      this.error = false
-      this.errorMessage = ''
+      this.stories = stories;
+      this.loading = false;
+      this.error = false;
+      this.errorMessage = "";
     },
-    createError (error) {
-      this.loading = false
-      this.error = true
-      this.errorMessage = error
+    createError(error) {
+      this.loading = false;
+      this.error = true;
+      this.errorMessage = error;
     },
-    whileNextPageLoading () {
-      this.loading = true
-      this.error = false
-      this.errorMessage = ''
+    whileNextPageLoading() {
+      this.loading = true;
+      this.error = false;
+      this.errorMessage = "";
     },
-    onNextPageReceived (stories) {
-      this.loading = false
-      this.stories = [...this.stories, ...stories]
-      this.error = false
-      this.errorMessage = ''
+    onNextPageReceived(stories) {
+      this.loading = false;
+      this.stories = [...this.stories, ...stories];
+      this.error = false;
+      this.errorMessage = "";
     },
-    initialLoad () {
-      this.makeRequest()
+    initialLoad() {
+      this.makeRequest();
       axios({
-        method: 'get',
+        method: "get",
         url: `${BASE_URL}/${this.subredditName}/hot/.json`,
         params: {
           limit: 15,
-        }
+        },
       })
-      .then(res => {
-        let storiesRaw, stories
-        if (res.data?.data?.children) storiesRaw = res.data.data.children
-        if (storiesRaw) stories = storiesCompressor(storiesRaw)
-        if (stories) this.onStoriesReceived(stories)
-        if (!stories) this.createError('Cannot load posts')
-      })
-      .catch(() => {
-        this.createError('Cannot load posts')
-      })
+        .then((res) => {
+          let storiesRaw, stories;
+          if (res.data?.data?.children) storiesRaw = res.data.data.children;
+          if (storiesRaw) stories = storiesCompressor(storiesRaw);
+          if (stories) this.onStoriesReceived(stories);
+          if (!stories) this.createError("Cannot load posts");
+        })
+        .catch(() => {
+          this.createError("Cannot load posts");
+        });
     },
-    loadMore () {
-      const y = window.scrollY
-      const after = this.stories[this.stories.length - 1].name
-      this.whileNextPageLoading()
+    loadMore() {
+      const y = window.scrollY;
+      const after = this.stories[this.stories.length - 1].name;
+      this.whileNextPageLoading();
       axios({
-        method: 'get',
+        method: "get",
         url: `${BASE_URL}/${this.subredditName}/hot/.json`,
         params: {
           limit: 15,
           after,
-        }
+        },
       })
-      .then(res => {
-        let storiesRaw, stories
-        if (res.data?.data?.children) storiesRaw = res.data.data.children
-        if (storiesRaw) stories = storiesCompressor(storiesRaw)
-        if (stories) this.onNextPageReceived(stories)
-        if (!stories) this.createError('Cannot load posts')
-      })
-      .catch(() => {
-        this.createError('Cannot load posts')
-      })
-      .finally(() => window.scrollTo(0, y))
+        .then((res) => {
+          let storiesRaw, stories;
+          if (res.data?.data?.children) storiesRaw = res.data.data.children;
+          if (storiesRaw) stories = storiesCompressor(storiesRaw);
+          if (stories) this.onNextPageReceived(stories);
+          if (!stories) this.createError("Cannot load posts");
+        })
+        .catch(() => {
+          this.createError("Cannot load posts");
+        })
+        .finally(() => window.scrollTo(0, y));
     },
   },
-  setup () {
-    return {
-    }
-  }
-}
+  setup() {
+    return {};
+  },
+};
 </script>

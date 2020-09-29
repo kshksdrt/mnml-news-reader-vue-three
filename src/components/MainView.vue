@@ -8,19 +8,19 @@
 </template>
 
 <script>
-import state from "../store/state"
-import Home from "./views/Home"
-import Sources from "./views/Sources"
-import About from "./views/About"
-import BottomNav from "./BottomNav"
+import state from "../store/state";
+import Home from "./views/Home";
+import Sources from "./views/Sources";
+import About from "./views/About";
+import BottomNav from "./BottomNav";
 
 export default {
   name: "MainView",
   components: { Home, Sources, About, BottomNav },
-  setup () {
+  setup() {
     return {
       currentView: state.currentView,
-    }
-  }
-}
+    };
+  },
+};
 </script>

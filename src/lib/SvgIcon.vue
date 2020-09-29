@@ -1,7 +1,10 @@
 Author: Achhunna Mali - https://medium.com/@achhunna
 
 <template>
-  <div v-html="require(`!html-loader!../assets/icons/${icon}.svg`)" class="svg-container"></div>
+  <div
+    v-html="require(`!html-loader!../assets/icons/${icon}.svg`)"
+    class="svg-container"
+  ></div>
 </template>
 
 <script>
