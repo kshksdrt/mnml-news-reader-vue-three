@@ -1,24 +1,5 @@
-# mnml-news-reader-vue-three
+# mnml-news-reader
 
-## Project setup
-```
-yarn install
-```
+A simple reddit client, suitable for reading news, built with Vue 3.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
-
-### Compiles and minifies for production
-```
-yarn build
-```
-
-### Lints and fixes files
-```
-yarn lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+![MNML_preview](https://user-images.githubusercontent.com/34638773/103138154-ed662100-46cf-11eb-9071-a93ec20bdebb.png)
