@@ -9,7 +9,9 @@
         placeholder="Subreddit name"
         v-model="subredditInput"
       />
-      <SvgIcon icon="add" class="icon-button" @click="addSubreddit()" />
+      <div class="icon-button" @click="addSubreddit()">
+        <span class="material-icons md-24">add</span>
+      </div>
     </div>
     <div
       id="add-subreddits-listitem"
@@ -17,11 +19,9 @@
       :key="element"
     >
       <p>{{ element }}</p>
-      <SvgIcon
-        icon="remove"
-        class="icon-button"
-        @click="removeSubreddit(element)"
-      />
+      <div class="icon-button" @click="removeSubreddit(element)">
+        <span class="material-icons md-24">remove</span>
+      </div>
     </div>
     <div
       v-if="error"
@@ -44,45 +44,43 @@
 import { ref } from "vue";
 import axios from "axios";
 import state from "../../store/state";
-import SvgIcon from "../../lib/SvgIcon";
-
-const subredditInput = ref("");
-
-function addSubreddit() {
-  loading.value = true;
-  const subredditName = subredditInput.value;
-  if (subredditName.length === 0) showAddError();
-
-  axios
-    .get(`https://www.reddit.com/r/${subredditName}/top/.json`)
-    .then(() => {
-      state.addSubreddit(subredditName);
-      loading.value = false;
-    })
-    .catch(() => {
-      showAddError();
-      loading.value = false;
-    });
-  subredditInput.value = "";
-}
-
-function removeSubreddit(subreddit) {
-  state.removeSubreddit(subreddit);
-}
-
-async function showAddError() {
-  error.value = true;
-  await new Promise((resolve) => setTimeout(resolve, 2000));
-  error.value = false;
-}
-
-const loading = ref(false);
-const error = ref(false);
 
 export default {
   name: "Sources",
-  components: { SvgIcon },
   setup() {
+    const subredditInput = ref("");
+
+    function addSubreddit() {
+      loading.value = true;
+      const subredditName = subredditInput.value;
+      if (subredditName.length === 0) showAddError();
+
+      axios
+        .get(`https://www.reddit.com/r/${subredditName}/top/.json`)
+        .then(() => {
+          state.addSubreddit(subredditName);
+          loading.value = false;
+        })
+        .catch(() => {
+          showAddError();
+          loading.value = false;
+        });
+      subredditInput.value = "";
+    }
+
+    function removeSubreddit(subreddit) {
+      state.removeSubreddit(subreddit);
+    }
+
+    async function showAddError() {
+      error.value = true;
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      error.value = false;
+    }
+
+    const loading = ref(false);
+    const error = ref(false);
+
     return {
       subreddits: state.subreddits,
       subredditInput,

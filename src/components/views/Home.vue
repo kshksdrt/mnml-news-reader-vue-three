@@ -14,8 +14,8 @@
 
 <script>
 import { onMounted, ref } from "vue";
-import Content from "./Home/Content";
-import state from "../../store/state";
+import Content from "/@/components/views/Home/Content.vue";
+import state from "/@/store/state";
 
 const currentTab = ref("");
 const setCurrentTab = (subreddit) => (currentTab.value = subreddit);

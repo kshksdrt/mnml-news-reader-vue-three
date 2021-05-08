@@ -3,7 +3,9 @@
     <StoryCard v-for="story in stories" :key="story.name" :story="story" />
     <div v-if="loading" class="loader"></div>
     <div v-if="error" class="flex-row">
-      <SvgIcon class="mx-2" icon="error" />
+      <div class="mx-2" icon="error">
+        <span class="material-icons md-24">error</span>
+      </div>
       <p class="text-small mx-2">Error loading posts</p>
     </div>
     <div v-if="stories.length > 0" class="flex-row">
@@ -14,8 +16,7 @@
 
 <script>
 import axios from "axios";
-import StoryCard from "./StoryCard";
-import SvgIcon from "../../../lib/SvgIcon";
+import StoryCard from "/@/components/views/Home/StoryCard.vue";
 
 const BASE_URL = "https://www.reddit.com/r";
 
@@ -41,7 +42,7 @@ function getReadableTime(ms) {
 
 export default {
   name: "Content",
-  components: { SvgIcon, StoryCard },
+  components: { StoryCard },
   props: {
     subredditName: String,
   },

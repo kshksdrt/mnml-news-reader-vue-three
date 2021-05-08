@@ -9,10 +9,10 @@
 
 <script>
 import state from "../store/state";
-import Home from "./views/Home";
-import Sources from "./views/Sources";
-import About from "./views/About";
-import BottomNav from "./BottomNav";
+import Home from "./views/Home.vue";
+import Sources from "./views/Sources.vue";
+import About from "./views/About.vue";
+import BottomNav from "./BottomNav.vue";
 
 export default {
   name: "MainView",

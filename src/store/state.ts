@@ -1,5 +1,6 @@
 import { reactive, computed } from "vue";
 import { lsSet } from "../scripts/localStorage";
+import { Theme, View } from "../types";
 
 // Constants
 const LS_KEYS = {
@@ -28,32 +29,32 @@ function toggleTheme() {
   console.log("MUTATION", "toggleTheme");
 }
 
-function setTheme(payload) {
+function setTheme(payload: Theme) {
   if (!themes.includes(payload)) return;
   state.theme = payload;
   lsSet(LS_KEYS.theme, payload);
   console.log("MUTATION", "setTheme");
 }
 
-function changeView(payload) {
+function changeView(payload: View) {
   if (!views.includes(payload)) return;
   state.currentView = payload;
   console.log("MUTATION", "changeView");
 }
 
-function addSubreddit(payload) {
+function addSubreddit(payload: string) {
   state.subreddits.push(payload);
   lsSet(LS_KEYS.subreddits, state.subreddits);
   console.log("MUTATION", "addSubreddit");
 }
 
-function removeSubreddit(payload) {
+function removeSubreddit(payload: string) {
   state.subreddits = state.subreddits.filter((x) => x !== payload);
   lsSet(LS_KEYS.subreddits, state.subreddits);
   console.log("MUTATION", "removeSubreddit");
 }
 
-function importSubreddits(payload) {
+function importSubreddits(payload: string[]) {
   if (!Array.isArray(payload)) return;
   if (payload.filter((x) => typeof x !== "string").length > 0) return;
   state.subreddits = payload;

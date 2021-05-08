@@ -7,7 +7,7 @@
     ></div>
     <div class="navbar">
       <div to="/" class="navbar-logo-container">
-        <SvgIcon class="nav-logo" icon="logo" />
+        <img src="/@/assets/icons/logo.svg" alt="App icon" />
       </div>
       <ul v-if="deviceType !== 'xs'" class="nav-list">
         <li class="nav-item" @click="navigate('home')">
@@ -20,12 +20,12 @@
           <a @click="toggleThemeDropdown()">Theme</a>
           <div v-if="themeDropdown" class="dropdown-target">
             <div @click="onThemeSelected('light')">
-              <SvgIcon icon="sun" />
+              <span class="material-icons md-24">light_mode</span>
               <p>Light</p>
             </div>
             <hr />
             <div @click="onThemeSelected('dark')">
-              <SvgIcon icon="moon" />
+              <span class="material-icons md-24">dark_mode</span>
               <p>Dark</p>
             </div>
           </div>
@@ -35,8 +35,7 @@
         </li>
       </ul>
       <div v-if="deviceType === 'xs'" id="themeToggler" @click="toggleTheme()">
-        <SvgIcon icon="sun" v-if="theme === 'dark'" />
-        <SvgIcon icon="moon" v-if="theme === 'light'" />
+        <span class="material-icons md-24">{{ theme + "_mode" }}</span>
       </div>
     </div>
   </div>
@@ -46,7 +45,6 @@
 import { ref } from "vue";
 import useBreakpoints from "../compositionFunctions/useBreakpoints";
 import state from "../store/state";
-import SvgIcon from "../lib/SvgIcon";
 
 const themeDropdown = ref(false);
 function toggleThemeDropdown() {
@@ -58,7 +56,6 @@ function onThemeSelected(theme) {
 
 export default {
   name: "Header",
-  components: { SvgIcon },
   setup() {
     const { type: deviceType } = useBreakpoints();
     return {
