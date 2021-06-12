@@ -9,13 +9,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent } from "vue"
 
-import Header from "/@/components/Header.vue";
-import MainView from "/@/components/MainView.vue";
-import Footer from "/@/components/Footer.vue";
-import state from "/@/store/state";
-import initialize from "/@/scripts/initialize";
+import Header from "/@/components/Header.vue"
+import MainView from "/@/components/MainView.vue"
+import Footer from "/@/components/Footer.vue"
+import state from "/@/store/state"
+import initialize from "/@/scripts/initialize"
 
 export default defineComponent({
   name: "App",
@@ -24,7 +24,7 @@ export default defineComponent({
     // initialize();
     return {
       theme: state.theme,
-    };
+    }
   },
-});
+})
 </script>
