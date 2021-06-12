@@ -1,4 +1,4 @@
-# mnml-news-reader
+# mnml-news-reader (No longer actively maintained)
 
 A simple reddit client, suitable for reading news, built with Vue 3.
 
